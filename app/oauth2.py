@@ -8,15 +8,15 @@ from . import schemas, database
 from .config import settings
 
 
+#Creating oauth2_sheme
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
-#SECRET_KEY
-#Algorithm
-#Expiration time
 
+#Initialising secret key, algorithm and expire minutes for creatting JWT token
 SECRET_KEY = settings.secret_key
 ALGORITHM = settings.algorithm
 ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
 
+#Creating an access token
 def create_access_token(data: dict):
         to_encode = data.copy()
         expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -26,6 +26,7 @@ def create_access_token(data: dict):
 
         return encoded_jwt
 
+#Verify access token
 def verify_access_token(token: str, credentials_exception):
 
         try:
@@ -40,6 +41,7 @@ def verify_access_token(token: str, credentials_exception):
         
         return token_data
         
+#Getting current user credentials using JWT token        
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(database.get_db)):
         credentials_exception = HTTPException(status_code= status.HTTP_401_UNAUTHORIZED, detail=f"Could not validate credentials", headers={"www-Authenticate": "Bearer"})
 

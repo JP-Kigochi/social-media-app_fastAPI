@@ -17,7 +17,7 @@ class Post(Base):
     
     owner = relationship("User")
 
-
+#creating a new database table called users
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key = True,nullable=False)
@@ -25,6 +25,7 @@ class User(Base):
     password = Column(String, nullable=False)
     created_at = Column(TIMESTAMP(timezone = True), nullable=False, server_default=text('now()'))
 
+#creating a new database table called votes
 class Vote(Base):
     __tablename__ = 'votes'
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
